@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- 上面的config_1_0.dtd如果报错，点击该行前面的小灯泡并选择Fetch...即可-->
+
+
+<!-- 配置生成器 -->
+<generatorConfiguration>
+    <!--数据库驱动:选择你的本地硬盘上面的数据库驱动包-->
+    <!--<classPathEntry location="mysql\mysql-connector-java\8.0.27\mysql-connector-java-8.0.27.jar"/>-->
+
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!--<plugin type="com.phoenixhell.authbackend.config.MyCommentGenerator ">-->
+        <!--</plugin>-->
+
+        <!-- 这里的type里写的是你的实现类的类全类名,注：如果不配置type属性,则会使用默认的CommentGenerator实现类DefaultCommentGenerator -->
+        <commentGenerator>
+            <!-- 去除自动生成的注释 -->
+             <property name="suppressAllComments" value="true" />
+
+            <!-- 是否生成注释代时间戳-->
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库链接URL，用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.56.10/auth?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Tokyo&amp;useSSL=false"
+                        userId="root" password="123456">
+
+            <!-- 仅仅查询当前库的表，不去查询其他库 -->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+            <property name="remarksReporting" value="true"/>
+        </jdbcConnection>
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!-- 是否使用BigDecimals，false可自动转化以下类型(Long Integer Short等) -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成模型的包名和位置
+        targetPackage : 生成User实体类存放的文件夹
+        -->
+        <javaModelGenerator targetPackage="com.phoenixhell.authbackend.entity" targetProject="src/main/java">
+            <!--enableSubPackages:如果true，MBG会根据catalog和schema来生成子包。
+            如果false就会直接用targetPackage属性。默认为false。-->
+            <property name="enableSubPackages" value="true"/>
+
+            <!--trimStrings:是否对数据库查询结果进行trim操作，
+            如果设置为true就会生成类似这样
+            public void setUsername(String username) {
+            this.username = username == null ? null : username.trim();
+            }的setter方法。默认值为false。-->
+            <property name="trimStrings" value="true"/>
+
+        </javaModelGenerator>
+
+        <!-- targetPackage：生成mapper.xml映射文件的包名-->
+        <!--          接口和mapper映射文件可以分开放，也可以放一起-->
+        <sqlMapGenerator targetPackage="com.phoenixhell.authbackend.mapper" targetProject="src/main/resources">
+            <!--            接口和mapper映射文件放一起-->
+            <!--  <sqlMapGenerator targetPackage="mappers" targetProject="src/main/java">-->
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+
+        <!-- targetPackage：生成Mapper也就是dao接口的包名 -->
+        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
+           type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
+           type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
+           type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
+        -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.phoenixhell.authbackend.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
+        <!--<table tableName="userEntities" domainObjectName="User" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false"-->
+        <!--       enableSelectByExample="false" selectByExampleQueryId="false">-->
+
+        <!--    &lt;!&ndash;            是否使用实际列名&ndash;&gt;-->
+        <!--    &lt;!&ndash;         true   MyBatis Generator会使用数据库中实际的字段名字作为生成的实体类的属性名。-->
+        <!--                 false(默认值)。如果设置为false,则MyBatis Generator会将数据库中实际的字段名字转换为驼峰式风格作为生成的实体类的属性名。&ndash;&gt;-->
+        <!--    <property name="useActualColumnNames" value="false"/>-->
+        <!--    &lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+        <!--    <generatedKey column="userId" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+
+        <!-- tableName设置为%号，可以对应所有表，此时不写domainObjectName -->
+        <!-- domainObjectName属性指定生成出来的实体类的类名 -->
+        <table tableName="sys%">
+            <!--generatedKey元素用于指定如何生成主键，其中column属性指定了主键列的名称，sqlStatement属性指定了生成主键的SQL语句类型。-->
+            <generatedKey column="id" sqlStatement="Mysql"/>
+            <domainObjectRenamingRule searchString="^Sys" replaceString=""/>
+        </table>
+    </context>
+
+</generatorConfiguration>

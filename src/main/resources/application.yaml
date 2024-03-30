@@ -1,0 +1,29 @@
+server:
+  port: 8080
+#  servlet:
+#    context-path: /api
+spring:
+  profiles:
+    active: dev
+  application:
+    name: spring-security-new
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.56.10/auth?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Tokyo
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+     host: 192.168.56.10
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true
+      time-to-live: 360000
+  #时间格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+jwtKey:
+  secretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecret
