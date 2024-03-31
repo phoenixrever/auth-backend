@@ -19,7 +19,7 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @PostMapping({"/login"})
+    @PostMapping({"/api/login"})
     //public R login(@RequestBody  String json) {
     public R login(@RequestBody LoginVo loginVo) {
 

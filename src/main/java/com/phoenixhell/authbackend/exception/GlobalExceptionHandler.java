@@ -2,6 +2,9 @@ package com.phoenixhell.authbackend.exception;
 
 import com.phoenixhell.authbackend.utils.ExceptionCode;
 import com.phoenixhell.authbackend.utils.R;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -11,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 
 /**
- * AuthenticationException异常 也可以被全局异常捕获  不过不推荐
+ * AuthenticationException异常 全局捕获
  *
  * @ControllerAdvice和@ExceptionHanlder组合拦截，不能拦截Filter中的异常
  * @ControllerAdvice只是对Controller做了加强，而Filter在Controller之前进行 controller中抛出的异常我们使用ControllerAdvice来处理：
@@ -20,8 +23,7 @@ import java.util.HashMap;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-@ExceptionHandler(value = MethodArgumentNotValidException.class)
-    //TODO 捕获AUTH 异常
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
 
     public R handleValidationException(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
@@ -40,11 +42,32 @@ public class GlobalExceptionHandler {
     public R handleMissingParams(MissingServletRequestParameterException ex) {
         String name = ex.getParameterName();
         System.out.println(name + " parameter is missing");
-        return R.ok().put("error",name + " parameter is missing");
+        return R.ok().put("error", name + " parameter is missing");
+    }
+
+
+    @ExceptionHandler(AuthenticationException.class)
+    public R errorHandle(AuthenticationException authenticationException) {
+        System.out.println("AuthenticationException捕获到了异常");
+
+        if (authenticationException instanceof BadCredentialsException ) {
+            //BadCredentialsException 的 message是自己定义的
+            return R.error(ExceptionCode.LOGIN_EXCEPTION.getCode(), ExceptionCode.LOGIN_EXCEPTION.getMessage());
+        }
+        return R.error(11111, authenticationException.getMessage());
     }
 
     @ExceptionHandler(MyException.class)
     public R errorHandle(MyException myException) {
-        return R.error(myException.getCode(), myException.getMessage());
+        System.out.println("MyException捕获到了异常");
+        return R.error(myException.getCode(), myException.getMessage()
+        );
+    }
+
+    //捕获其他所有异常
+    @ExceptionHandler(Exception.class)
+    public R errorHandle(Exception exception) {
+        System.out.println("全局异常捕获到了异常");
+        return R.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
     }
 }

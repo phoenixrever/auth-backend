@@ -4,6 +4,7 @@ import com.phoenixhell.authbackend.entity.LoginUserDetails;
 import com.phoenixhell.authbackend.entity.vo.LoginVo;
 import com.phoenixhell.authbackend.entity.vo.SignVo;
 import com.phoenixhell.authbackend.service.LoginService;
+import com.phoenixhell.authbackend.utils.ExceptionCode;
 import com.phoenixhell.authbackend.utils.JwtUtil;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -56,9 +58,10 @@ public class LoginServiceImpl implements LoginService {
                 UsernamePasswordAuthenticationToken.unauthenticated(loginVo.getUsername(), loginVo.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationRequest);
 
-        //覆盖认证错误抛出的信息 TODO 自定义一个Auth 异常 用全局异常捕获
         if(Objects.isNull(authentication)){
-            throw new RuntimeException("用户名或者密码错误");
+            //在这里抛出的异常 SpringSecurity 会被 ExceptionTranslationFilter 自动捕获并转换UsernameNotFoundException为BadCredentialsException
+            //然后再全局捕获 自定义错误 这边写的错误message 没啥用 最后BadCredentialsException有自己的错误信息 还是国际化的
+            throw new UsernameNotFoundException(ExceptionCode.LOGIN_EXCEPTION.getMessage());
         }
 
         //密码比对正确继续执行 LoginUserDetails里面的 密码已经被security 清空

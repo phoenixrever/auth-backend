@@ -8,7 +8,7 @@ package com.phoenixhell.authbackend.utils;
 
 
 public enum ExceptionCode {
-    LOGIN_EXCEPTION(20000,"用户名或密码错误"),
+    LOGIN_EXCEPTION(20000,"ユーザ名かパスワードが正しくありません"),
     CAPTCHA_EXCEPTION(90001,"验证码错误"),
     TO_MANY_REQUEST_EXCEPTION(10002, "请求过于频繁"),
     VALID_EXCEPTION(10001, "参数格式校验失败"),

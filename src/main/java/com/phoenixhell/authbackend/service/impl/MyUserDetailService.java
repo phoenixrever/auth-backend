@@ -40,11 +40,11 @@ public class MyUserDetailService implements UserDetailsService {
          *  调用我们自定义的 loadUserByUsername 方法的时候 loadedUser是不为空的只是里面的UserEntity 是空
          *  后面调用additionalAuthenticationChecks loadedUser.getPassword() 比对密码的时候会空异常(因为里面的UserEntity为空)
          */
+
         if(Objects.isNull(userEntity)){
-            //在这里抛出的异常 SpringSecurity 会被 ExceptionTranslationFilter 自动捕获并转换UsernameNotFoundException为BadCredentialsException
-            //也可以直接排除 RuntimeException 因为 UsernameNotFoundException -> AuthenticationException -> RuntimeException
-            //throw new UsernameNotFoundException("无此用户"); 抛出错误是Bad credentials 不太明确 不使用
-            throw new RuntimeException(ExceptionCode.LOGIN_EXCEPTION.getMessage());
+            //在这里抛出的 UsernameNotFoundException异常  默认会被  SpringSecurity AbstractUserDetailsAuthenticationProvider(DaoAuthenticationProvider) 转换为 BadCredentialsException
+            //也直接排除 RuntimeException 因为 UsernameNotFoundException -> AuthenticationException -> RuntimeException
+            throw new UsernameNotFoundException(ExceptionCode.LOGIN_EXCEPTION.getMessage());
         }
 
         //TODO 查询对应的权限信息 
