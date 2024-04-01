@@ -3,20 +3,30 @@ package com.phoenixhell.authbackend.service.impl;
 import com.phoenixhell.authbackend.entity.LoginUserDetails;
 import com.phoenixhell.authbackend.entity.vo.LoginVo;
 import com.phoenixhell.authbackend.entity.vo.SignVo;
+import com.phoenixhell.authbackend.entity.vo.UserRoleMenuVo;
 import com.phoenixhell.authbackend.service.LoginService;
+import com.phoenixhell.authbackend.service.UserService;
 import com.phoenixhell.authbackend.utils.ExceptionCode;
+import com.phoenixhell.authbackend.utils.JacksonUtil;
 import com.phoenixhell.authbackend.utils.JwtUtil;
 import jakarta.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  *  自定义login方法
@@ -48,6 +58,12 @@ public class LoginServiceImpl implements LoginService {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private UserService userService;
+
+    //@Autowired
+    //private UsersRolesService usersRolesService;
+
 
     @Override
     public String login(LoginVo loginVo) {
@@ -64,19 +80,36 @@ public class LoginServiceImpl implements LoginService {
             throw new UsernameNotFoundException(ExceptionCode.LOGIN_EXCEPTION.getMessage());
         }
 
-        //密码比对正确继续执行 LoginUserDetails里面的 密码已经被security 清空
+        //密码比对正确继续执行 LoginUserDetails里面的 密码注意清除
         //getPrincipal()，身份信息，大部分情况下返回的是UserDetails接口的实现类
         LoginUserDetails userDetails = (LoginUserDetails) authentication.getPrincipal();
 
+        String username = userDetails.getUsername();
+
+        //userDetails 存入redis ，用户请求request 带着token 访问的时候 jwttokenFilter的时候可以根据token username 获取对应菜单和权限
+        //expireTime token 的过期时间 如果redis 里面没有这个token 说明过期了 不用解析token自带的时间，如果不用redis 这边可以解析token自身的时间
+
+        //多做一步吧清除 密码 最后是复制一个改
+        LoginUserDetails loginUserDetails = new LoginUserDetails();
+        BeanUtils.copyProperties(userDetails,loginUserDetails );
+        loginUserDetails.removePassword();
+        String  userDetailsJson = JacksonUtil.toJsonNoException(loginUserDetails);
+
+        if(userDetailsJson!=null){
+            stringRedisTemplate.opsForValue().set(TOKEN_PREFIX+username,userDetailsJson,expireTime, TimeUnit.MILLISECONDS);
+        }
+
         //生成jwt
         HashMap<String, Object> claims = new HashMap<>();
-        claims.put("username",userDetails.getUsername());
+        claims.put("username",username);
 
         String token = JwtUtil.generate(claims, expireTime, userDetails.getUsername());
 //        System.out.println(token);
 //        System.out.println(JwtUtil.getClaim(token));
+
         return  token;
     }
+
 
 
     @Override

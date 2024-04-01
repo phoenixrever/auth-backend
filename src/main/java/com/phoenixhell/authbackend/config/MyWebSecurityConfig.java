@@ -29,6 +29,14 @@ import static org.springframework.security.authorization.AuthorizationManagers.a
 @EnableWebSecurity // the annotation imports the HttpSecurityConfiguration configuration class.
 public class MyWebSecurityConfig {
 
+    /*
+     * 注意 配置了 context-path: /api 的情况下 requestMatchers 是不需要加 /api 的
+     *  即下面的代码是【不需要】的 同理 controller 有而不要 /api
+     * 一句话 除了访问路径要待/api 代码里面的一切照旧
+     * @Value("${server.servlet.context-path:''}")
+        private String contextPath; d
+     */
+
     /**
      * permitAll() 方法表示允许所有用户（包括未经身份验证的用户）访问 "/login" 路径，这通常用于登录页面或其他公开的页面。
      * .anyRequest().authenticated() 配置了对除了 "/login" 路径之外的所有请求都要求用户进行身份验证。
@@ -46,7 +54,7 @@ public class MyWebSecurityConfig {
                     .requestMatchers("/static/**", "/signup", "/login").permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .requestMatchers("/db/**").access(allOf(hasAuthority("db"), hasRole("ADMIN")))
-                    .anyRequest().denyAll()
+                    .anyRequest().authenticated()
             );
         //TODO 这个看怎么写
         // Add JWT token filter 必须在UsernamePasswordAuthenticationFilter前面

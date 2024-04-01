@@ -1,6 +1,5 @@
 package com.phoenixhell.authbackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -32,7 +31,7 @@ import java.util.List;
 public class LoginUserDetails implements UserDetails {
     public static final String ROLE_PREFIX = "ROLE_";
 
-    private UserEntity UserEntity;
+    private UserEntity userEntity;
 
 
 
@@ -52,7 +51,7 @@ public class LoginUserDetails implements UserDetails {
     }
 
     public LoginUserDetails(UserEntity User, List<String> permissions) {
-        this.UserEntity = User;
+        this.userEntity = User;
         this.permissions = permissions;
     }
 
@@ -65,11 +64,11 @@ public class LoginUserDetails implements UserDetails {
     }
 
     public UserEntity getUserEntity() {
-        return UserEntity;
+        return userEntity;
     }
 
     public void setUserEntity(UserEntity User) {
-        this.UserEntity = User;
+        this.userEntity = User;
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -85,12 +84,16 @@ public class LoginUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return UserEntity.getPassword();
+        return userEntity.getPassword();
+    }
+
+    public void removePassword() {
+        userEntity.setPassword("");
     }
 
     @Override
     public String getUsername() {
-        return UserEntity.getUsername();
+        return userEntity.getUsername();
     }
 
     @Override

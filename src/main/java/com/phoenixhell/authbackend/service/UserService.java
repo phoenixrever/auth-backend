@@ -1,6 +1,7 @@
 package com.phoenixhell.authbackend.service;
 
 import com.phoenixhell.authbackend.entity.UserEntity;
+import com.phoenixhell.authbackend.entity.vo.UserRoleMenuVo;
 
 import java.util.List;
 
@@ -12,4 +13,7 @@ public interface UserService {
     UserEntity selectByPrimaryKey(Long userid);
     UserEntity selectByUserName(String username);
 
+    List<UserRoleMenuVo> getUserMenus(String username);
+
+    List<String> getPermissions(String username);
 }

@@ -2,6 +2,7 @@ package com.phoenixhell.authbackend.service.impl;
 
 import com.phoenixhell.authbackend.entity.UserEntity;
 import com.phoenixhell.authbackend.entity.UserExample;
+import com.phoenixhell.authbackend.entity.vo.UserRoleMenuVo;
 import com.phoenixhell.authbackend.mapper.UserMapper;
 import com.phoenixhell.authbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,15 @@ public class UserServiceImpl implements UserService{
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<UserRoleMenuVo> getUserMenus(String username) {
+        return null;
+    }
+
+    @Override
+    public List<String> getPermissions(String username) {
+        return null;
     }
 }

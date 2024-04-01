@@ -19,7 +19,9 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @PostMapping({"/api/login"})
+    // context-path: /api controller 中 api 就可以省略
+    //不要忘记security 放行/login （也不需要加 /api）
+    @PostMapping({"/login"})
     //public R login(@RequestBody  String json) {
     public R login(@RequestBody LoginVo loginVo) {
 
