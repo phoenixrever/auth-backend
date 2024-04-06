@@ -1,5 +1,9 @@
 package com.phoenixhell.authbackend.config;
 
+import com.phoenixhell.authbackend.filter.CustomAuthenticationEntryPoint;
+import jakarta.servlet.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,8 +16,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasRole;
@@ -28,6 +34,11 @@ import static org.springframework.security.authorization.AuthorizationManagers.a
 @Configuration
 @EnableWebSecurity // the annotation imports the HttpSecurityConfiguration configuration class.
 public class MyWebSecurityConfig {
+    @Autowired
+    private Filter jwtTokenFilter;
+
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
 
     /*
      * 注意 配置了 context-path: /api 的情况下 requestMatchers 是不需要加 /api 的
@@ -48,17 +59,21 @@ public class MyWebSecurityConfig {
         // 关闭了 cors() 允许跨域
         // 关闭了CSRF防护，“/logout” 需要用post的方式提交
         http.cors(cors -> cors.disable())
-            .csrf((csrf) -> csrf.disable())
-            .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/static/**", "/signup", "/login").permitAll()
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
-                    .requestMatchers("/db/**").access(allOf(hasAuthority("db"), hasRole("ADMIN")))
-                    .anyRequest().authenticated()
-            );
-        //TODO 这个看怎么写
-        // Add JWT token filter 必须在UsernamePasswordAuthenticationFilter前面
-        //.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf((csrf) -> csrf.disable())
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/static/**", "/signup", "/login").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/db/**").access(allOf(hasAuthority("db"), hasRole("ADMIN")))
+                        .anyRequest().authenticated()
+                )
+                // Add JWT token filter 必须在UsernamePasswordAuthenticationFilter前面
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+
+                //授权异常
+                .exceptionHandling(handler -> {
+                    handler.authenticationEntryPoint(authenticationEntryPoint);
+                });
 
         return http.build();
     }

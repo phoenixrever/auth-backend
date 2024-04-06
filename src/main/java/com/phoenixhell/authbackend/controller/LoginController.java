@@ -28,4 +28,10 @@ public class LoginController {
         String token = loginService.login(loginVo);
         return R.ok().put("token", token);
     }
+
+    @GetMapping({"/error404"})
+    //public R login(@RequestBody  String json) {
+    public R error() {
+        return R.ok().put("error", "token");
+    }
 }

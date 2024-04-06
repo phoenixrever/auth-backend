@@ -137,8 +137,6 @@ public class JwtUtil {
             e.printStackTrace();
             // @ControllerAdvice不能拦截Filter中的异常,
             // 因为@ControllerAdvice只是对Controller做了加强，而Filter在Controller之前进行
-
-            // 不处理(没有authentication)直接由下面的异常处理器处理CustomAuthenticationEntryPoint
         }
         return claims;
     }

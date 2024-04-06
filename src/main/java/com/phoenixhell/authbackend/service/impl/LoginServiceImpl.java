@@ -84,6 +84,8 @@ public class LoginServiceImpl implements LoginService {
         //getPrincipal()，身份信息，大部分情况下返回的是UserDetails接口的实现类
         LoginUserDetails userDetails = (LoginUserDetails) authentication.getPrincipal();
 
+        //todo 从数据库中获取用户的所有permissions
+
         String username = userDetails.getUsername();
 
         //userDetails 存入redis ，用户请求request 带着token 访问的时候 jwttokenFilter的时候可以根据token username 获取对应菜单和权限
