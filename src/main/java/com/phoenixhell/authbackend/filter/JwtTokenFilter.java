@@ -90,7 +90,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         Collection<? extends GrantedAuthority> authorities = loginUserDetails.getAuthorities();
 
         //3个参数的构造函数 会设置认证状态 super.setAuthenticated(true);
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null,authorities);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginUserDetails, null,authorities);
 
         //将当前请求的详细信息（例如客户端的IP地址、会话ID等）添加到认证对象中。ip地址会用到
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

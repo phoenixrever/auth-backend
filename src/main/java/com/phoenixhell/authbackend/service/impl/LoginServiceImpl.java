@@ -117,13 +117,13 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void logout() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken)SecurityContextHolder.getContext().getAuthentication();
         // 如果已经登陆
         if (authentication != null) {
-            // UsernamePasswordAuthenticationToken(username, null,authorities); 构建的 authentication 只要admin name
-            String username = authentication.getName();
+            //这里强转的前提是 UsernamePasswordAuthenticationToken(loginUserDetails, null,authorities); 传递的是loginUserDetails 而不是username 字符串
+            LoginUserDetails loginUserDetails = (LoginUserDetails)authentication.getPrincipal();
             SecurityContextHolder.clearContext();
-            stringRedisTemplate.delete(TOKEN_PREFIX+username);
+            stringRedisTemplate.delete(TOKEN_PREFIX+loginUserDetails.getUsername());
         }
     }
 
