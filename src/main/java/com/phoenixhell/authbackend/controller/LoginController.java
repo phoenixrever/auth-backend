@@ -29,9 +29,9 @@ public class LoginController {
         return R.ok().put("token", token);
     }
 
-    @GetMapping({"/error404"})
-    //public R login(@RequestBody  String json) {
-    public R error() {
-        return R.ok().put("error", "token");
+    @PostMapping({"/apiLogout"})
+    public R logouts() {
+        loginService.logout();
+        return R.ok();
     }
 }

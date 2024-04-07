@@ -62,15 +62,13 @@ public class MyWebSecurityConfig {
                 .csrf((csrf) -> csrf.disable())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/static/**", "/signup", "/login").permitAll()
+                        .requestMatchers("/static/**", "/signup", "/login","/apiLogout").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/db/**").access(allOf(hasAuthority("db"), hasRole("ADMIN")))
                         .anyRequest().authenticated()
                 )
                 // Add JWT token filter 必须在UsernamePasswordAuthenticationFilter前面
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-
-                //授权异常
                 .exceptionHandling(handler -> {
                     handler.authenticationEntryPoint(authenticationEntryPoint);
                 });

@@ -17,6 +17,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -116,7 +117,14 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void logout() {
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // 如果已经登陆
+        if (authentication != null) {
+            // UsernamePasswordAuthenticationToken(username, null,authorities); 构建的 authentication 只要admin name
+            String username = authentication.getName();
+            SecurityContextHolder.clearContext();
+            stringRedisTemplate.delete(TOKEN_PREFIX+username);
+        }
     }
 
     @Override

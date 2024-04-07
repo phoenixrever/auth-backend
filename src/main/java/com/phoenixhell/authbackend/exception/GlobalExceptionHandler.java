@@ -9,13 +9,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.HashMap;
 
@@ -39,11 +36,11 @@ public class GlobalExceptionHandler {
      *  需要通过自定义 CustomAccessDeniedHandler  使用handlerExceptionResolver 传递异常到控制层捕获
      *
      */
+
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-        System.out.println("捕获AccessDeniedException异常"+ex);
-        String errorMessage = "Access denied: " + ex.getMessage();
-        return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
+    public R handleAccessDeniedException(AccessDeniedException exception) {
+        System.out.println("AccessDeniedException"+exception);
+        return R.error(99999, exception.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
@@ -55,7 +52,7 @@ public class GlobalExceptionHandler {
             return R.error(ExceptionCode.LOGIN_EXCEPTION.getCode(), ExceptionCode.LOGIN_EXCEPTION.getMessage());
         }
         else if(exception  instanceof InsufficientAuthenticationException){
-            return R.error(ExceptionCode.ACCESS_DENIED.getCode(), ExceptionCode.ACCESS_DENIED.getMessage());
+            return R.error(ExceptionCode.TOKEN_NOT_MATCH_EXCEPTION.getCode(), ExceptionCode.TOKEN_NOT_MATCH_EXCEPTION.getMessage());
         }
         return R.error(99999, exception.getMessage());
     }
@@ -91,9 +88,9 @@ public class GlobalExceptionHandler {
     }
 
     //捕获其他所有异常
-    @ExceptionHandler(Exception.class)
-    public R errorHandle(Exception exception) {
-        System.out.println("全局异常捕获到了异常");
-        return R.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
-    }
+    //@ExceptionHandler(Exception.class)
+    //public R errorHandle(Exception exception) {
+    //    System.out.println("全局异常捕获到了异常");
+    //    return R.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
+    //}
 }

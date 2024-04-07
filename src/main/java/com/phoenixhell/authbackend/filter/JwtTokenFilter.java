@@ -1,8 +1,6 @@
 package com.phoenixhell.authbackend.filter;
 
 import com.phoenixhell.authbackend.entity.LoginUserDetails;
-import com.phoenixhell.authbackend.exception.MyException;
-import com.phoenixhell.authbackend.utils.ExceptionCode;
 import com.phoenixhell.authbackend.utils.JacksonUtil;
 import com.phoenixhell.authbackend.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -12,23 +10,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.http.HttpHeaders;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 注意:
@@ -48,11 +41,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Resource
     private StringRedisTemplate stringredisTemplate;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-        // 如果已经通过认证
+        // 如果已经通过认证 TODO 这个必要嘛
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             chain.doFilter(request, response);
             /**
@@ -83,13 +77,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         //获取userDetail 如果连获取不到说明此token已经被删除了(没有过期，过期的在上一步 token 就isExpired 了)
         String userDetailJson = stringredisTemplate.opsForValue().get(TOKEN_PREFIX + username);
-        LoginUserDetails loginUserDetails = JacksonUtil.toObjectNoException(userDetailJson, LoginUserDetails.class);
+        LoginUserDetails loginUserDetails=null;
+        if(StringUtils.hasText(userDetailJson)){
+            loginUserDetails= JacksonUtil.toObjectNoException(userDetailJson, LoginUserDetails.class);
+        }
 
         if(loginUserDetails==null){
             chain.doFilter(request, response);
             return;
         }
-
         //getAuthorities 会拿存入redis里面的permissions 自动生成
         Collection<? extends GrantedAuthority> authorities = loginUserDetails.getAuthorities();
 
