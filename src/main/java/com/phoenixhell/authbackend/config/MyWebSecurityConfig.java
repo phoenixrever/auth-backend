@@ -62,7 +62,9 @@ public class MyWebSecurityConfig {
                 .csrf((csrf) -> csrf.disable())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/static/**", "/signup", "/login","/apiLogout").permitAll()
+                        //permitAll  直接放行  anonymous 未登录状态下才允许访问
+                        .requestMatchers("/static/**", "/apiLogout").permitAll()
+                        .requestMatchers("/signup", "/login").anonymous()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/db/**").access(allOf(hasAuthority("db"), hasRole("ADMIN")))
                         .anyRequest().authenticated()
