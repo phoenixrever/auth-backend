@@ -1,5 +1,7 @@
 package com.phoenixhell.authbackend.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -27,7 +29,7 @@ import java.util.List;
 /**
  使用 ObjectMapper 将该 JSON 数据转换为 User 对象： 忽略未知属性而不抛出异常。
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginUserDetails implements UserDetails {
     public static final String ROLE_PREFIX = "ROLE_";
 
@@ -42,7 +44,7 @@ public class LoginUserDetails implements UserDetails {
 
 
     //一定要是这个名字 才会覆盖实现类UserDetails 的authorities JsonIgnore 才会起作用
-    //@JsonIgnore  指定了@JsonIgnoreProperties 类级别 就不用指定属性级别了
+    @JsonIgnore  //指定了@JsonIgnoreProperties 类级别 就不用指定属性级别了
     List<GrantedAuthority> authorities;
 
 
