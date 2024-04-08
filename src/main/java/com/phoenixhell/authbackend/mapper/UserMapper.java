@@ -3,6 +3,8 @@ package com.phoenixhell.authbackend.mapper;
 import com.phoenixhell.authbackend.entity.UserEntity;
 import com.phoenixhell.authbackend.entity.UserExample;
 import java.util.List;
+
+import com.phoenixhell.authbackend.entity.vo.UserRoleMenuVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -49,4 +51,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(UserEntity record);
 
     int updateByPrimaryKey(UserEntity record);
+
+    List<UserRoleMenuVo> getPermissionsByUsername(String username);
 }

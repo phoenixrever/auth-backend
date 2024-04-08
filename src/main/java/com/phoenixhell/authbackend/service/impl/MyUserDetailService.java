@@ -2,6 +2,7 @@ package com.phoenixhell.authbackend.service.impl;
 
 import com.phoenixhell.authbackend.entity.LoginUserDetails;
 import com.phoenixhell.authbackend.entity.UserEntity;
+import com.phoenixhell.authbackend.entity.vo.UserRoleMenuVo;
 import com.phoenixhell.authbackend.service.UserService;
 import com.phoenixhell.authbackend.utils.ExceptionCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,9 @@ public class MyUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(ExceptionCode.LOGIN_EXCEPTION.getMessage());
         }
 
-        //TODO 查询对应的权限信息 
-        List<String> permissions = new ArrayList<>();
+        List<UserRoleMenuVo> userRoleMenuVos = userService.getPermissionsByUsername(userEntity.getUsername());
 
+        List<String> permissions = userRoleMenuVos.stream().map(item -> item.getPermission()).toList();
         LoginUserDetails userDetails = new LoginUserDetails(userEntity, permissions);
 
         return userDetails;

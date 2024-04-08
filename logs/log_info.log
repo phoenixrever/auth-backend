@@ -685,3 +685,30 @@
 2024-04-07 21:40:20.498 [http-nio-8080-exec-1] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
 2024-04-07 21:40:20.499 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
 2024-04-07 21:40:20.500 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-04-07 21:44:29.533 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-04-07 21:44:29.554 [restartedMain] INFO  c.phoenixhell.authbackend.AuthBackendApplication - Starting AuthBackendApplication using Java 19.0.1 with PID 15364 (D:\code\auth-backend\target\classes started by phoen in D:\code\auth-backend)
+2024-04-07 21:44:29.554 [restartedMain] INFO  c.phoenixhell.authbackend.AuthBackendApplication - The following 1 profile is active: "dev"
+2024-04-07 21:44:29.583 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-04-07 21:44:29.584 [restartedMain] INFO  o.s.b.d.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-04-07 21:44:30.072 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-04-07 21:44:30.074 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-04-07 21:44:30.095 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
+2024-04-07 21:44:30.420 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-04-07 21:44:30.426 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-04-07 21:44:30.427 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2024-04-07 21:44:30.428 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-07 21:44:30.457 [restartedMain] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2024-04-07 21:44:30.457 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 873 ms
+2024-04-07 21:44:30.967 [restartedMain] INFO  o.s.security.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3d759a72, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@277b2761, org.springframework.security.web.context.SecurityContextHolderFilter@738b5ef5, org.springframework.security.web.header.HeaderWriterFilter@23a35d6c, org.springframework.security.web.authentication.logout.LogoutFilter@340e454f, com.phoenixhell.authbackend.filter.JwtTokenFilter@4a8bb538, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@e944641, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4fd38d50, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@19170dcc, org.springframework.security.web.session.SessionManagementFilter@f469d2e, org.springframework.security.web.access.ExceptionTranslationFilter@38f14ae3, org.springframework.security.web.access.intercept.AuthorizationFilter@4b9e0eff]
+2024-04-07 21:44:31.128 [restartedMain] INFO  o.s.b.d.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-04-07 21:44:31.188 [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-04-07 21:44:31.203 [restartedMain] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2024-04-07 21:44:31.211 [restartedMain] INFO  c.phoenixhell.authbackend.AuthBackendApplication - Started AuthBackendApplication in 2.065 seconds (process running for 2.527)
+2024-04-07 21:44:38.739 [http-nio-8080-exec-1] INFO  o.a.c.c.ContainerBase.[Tomcat].[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-04-07 21:44:38.739 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-04-07 21:44:38.740 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-04-07 21:44:45.959 [http-nio-8080-exec-4] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-04-07 21:44:46.120 [http-nio-8080-exec-4] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5efc006f
+2024-04-07 21:44:46.122 [http-nio-8080-exec-4] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-04-07 22:03:59.987 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-04-07 22:03:59.991 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

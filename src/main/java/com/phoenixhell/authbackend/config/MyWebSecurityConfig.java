@@ -1,15 +1,13 @@
 package com.phoenixhell.authbackend.config;
 
-import com.phoenixhell.authbackend.filter.CustomAuthenticationEntryPoint;
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasRole;
@@ -30,8 +27,12 @@ import static org.springframework.security.authorization.AuthorizationManagers.a
  * userDetails 取出的是已经加密完成存在数据库的密码 passwordEncoder加密原始密码
  * <p>
  * 新版本不用继承  WebSecurityConfigurerAdapter了 使用@EnableWebSecurity注解
+ *
+ *  securedEnabled 角色 role @Secured({"ROLE_customer","ROLE_admin"})
+ *  prePostEnabled  @PreAuthorize
  */
 @Configuration
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)  //@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableWebSecurity // the annotation imports the HttpSecurityConfiguration configuration class.
 public class MyWebSecurityConfig {
     @Autowired

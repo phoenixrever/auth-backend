@@ -1,7 +1,9 @@
 package com.phoenixhell.authbackend.service.impl;
 
+import com.phoenixhell.authbackend.entity.RolesmenusExample;
 import com.phoenixhell.authbackend.entity.UserEntity;
 import com.phoenixhell.authbackend.entity.UserExample;
+import com.phoenixhell.authbackend.entity.UsersrolesExample;
 import com.phoenixhell.authbackend.entity.vo.UserRoleMenuVo;
 import com.phoenixhell.authbackend.mapper.UserMapper;
 import com.phoenixhell.authbackend.service.UserService;
@@ -15,7 +17,7 @@ import java.util.List;
  * @date 2024-03-28 22:29
  */
 @Service("userService")
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserEntity selectByUserName(String  username) {
+    public UserEntity selectByUserName(String username) {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUsernameEqualTo(username);
         List<UserEntity> userEntities = userMapper.selectByExample(userExample);
@@ -42,7 +44,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<String> getPermissions(String username) {
-        return null;
+    public List<UserRoleMenuVo> getPermissionsByUsername(String username) {
+        //这边写自定义sql 好一点  mybatis 写太多了
+        List<UserRoleMenuVo> roleMenuVos = userMapper.getPermissionsByUsername(username);
+
+        return roleMenuVos;
     }
 }

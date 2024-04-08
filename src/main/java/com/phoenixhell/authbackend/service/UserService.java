@@ -15,5 +15,5 @@ public interface UserService {
 
     List<UserRoleMenuVo> getUserMenus(String username);
 
-    List<String> getPermissions(String username);
+    List<UserRoleMenuVo> getPermissionsByUsername(String username);
 }
