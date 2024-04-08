@@ -78,8 +78,8 @@ public class LoginUserDetails implements UserDetails {
        // List<GrantedAuthority> grantedAuthorities = AuthorityUtils.createAuthorityList(authorities.toArray(new String[0]));
 
         //MyUserDetailService 会设置默认权限visitor
-        List<GrantedAuthority>  grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", permissions));
-        return grantedAuthorities;
+        authorities= AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", permissions));
+        return authorities;
     }
 
     @Override
