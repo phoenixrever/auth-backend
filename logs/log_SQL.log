@@ -1,9 +1,6 @@
-2024-04-07 21:39:34.624 [http-nio-8080-exec-6] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - ==>  Preparing: select user_id, username, nick_name, gender, phone, email, avatar, password, roles, enabled, created_by, updated_by, pwd_reset_time, created_time, updated_time from sys_user WHERE ( username = ? )
-2024-04-07 21:39:34.640 [http-nio-8080-exec-6] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - ==> Parameters: admin(String)
-2024-04-07 21:39:34.654 [http-nio-8080-exec-6] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - <==      Total: 1
-2024-04-07 21:39:47.431 [http-nio-8080-exec-9] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - ==>  Preparing: select user_id, username, nick_name, gender, phone, email, avatar, password, roles, enabled, created_by, updated_by, pwd_reset_time, created_time, updated_time from sys_user WHERE ( username = ? )
-2024-04-07 21:39:47.432 [http-nio-8080-exec-9] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - ==> Parameters: admin(String)
-2024-04-07 21:39:47.433 [http-nio-8080-exec-9] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - <==      Total: 1
-2024-04-07 21:44:46.126 [http-nio-8080-exec-4] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - ==>  Preparing: select user_id, username, nick_name, gender, phone, email, avatar, password, roles, enabled, created_by, updated_by, pwd_reset_time, created_time, updated_time from sys_user WHERE ( username = ? )
-2024-04-07 21:44:46.140 [http-nio-8080-exec-4] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - ==> Parameters: admin(String)
-2024-04-07 21:44:46.157 [http-nio-8080-exec-4] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - <==      Total: 1
+2024-04-18 20:42:38.266 [http-nio-8080-exec-2] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - ==>  Preparing: select user_id , username, nick_name, gender, phone, email, avatar, password, roles, enabled, created_by, updated_by, pwd_reset_time, created_time, updated_time from sys_user WHERE ( username = ? )
+2024-04-18 20:42:38.283 [http-nio-8080-exec-2] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - ==> Parameters: admin(String)
+2024-04-18 20:42:38.319 [http-nio-8080-exec-2] DEBUG c.p.authbackend.mapper.UserMapper.selectByExample - <==      Total: 1
+2024-04-18 20:42:38.322 [http-nio-8080-exec-2] DEBUG c.p.a.mapper.UserMapper.getPermissionsByUsername - ==>  Preparing: SELECT u.`user_id`, u.`username`, u.`nick_name`, r.`role_id`, r.`name` as roleName, m.`menu_id`, m.`pid`, m.`title`, m.`name` as menuName, m.`component`, m.`menu_sort`, m.`icon`, m.`path`, m.`redirect`, m.`hidden`, m.`permission` FROM sys_user u LEFT JOIN sys_users_roles ur ON u.`user_id` = ur.`user_id` LEFT JOIN sys_role r ON r.`role_id` = ur.`role_id` LEFT JOIN sys_roles_menus rm ON rm.`role_id` = r.`role_id` LEFT JOIN sys_menu m ON m.`menu_id` = rm.`menu_id` WHERE username = ?
+2024-04-18 20:42:38.324 [http-nio-8080-exec-2] DEBUG c.p.a.mapper.UserMapper.getPermissionsByUsername - ==> Parameters: admin(String)
+2024-04-18 20:42:38.339 [http-nio-8080-exec-2] DEBUG c.p.a.mapper.UserMapper.getPermissionsByUsername - <==      Total: 14

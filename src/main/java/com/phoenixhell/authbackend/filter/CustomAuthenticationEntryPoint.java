@@ -37,6 +37,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        System.out.println("从filter转发异常到controller层抛出："+authException);
         handlerExceptionResolver.resolveException(request, response, null, authException);
     }
 }

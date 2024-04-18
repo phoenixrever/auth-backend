@@ -28,21 +28,22 @@ import java.util.HashMap;
 public class GlobalExceptionHandler {
 
     /**
-     *
-     *  Spring Security 核心异常（如 AuthenticationException 和 AccessDeniedException）属于运行时异常。
-     *  由于这些异常是由 DispatcherServlet 后面的 Authentication Filter 在调用 Controller 方法之前抛出的，
-     *  因此 @ControllerAdvice 无法捕获这些异常
-     *
-     *  需要通过自定义 CustomAccessDeniedHandler  使用handlerExceptionResolver 传递异常到控制层捕获
-     *
+     *  AccessDeniedException 在调用 Controller 之后抛出的，
+     *  @ControllerAdvice 全局异常可以捕获
      */
-
     @ExceptionHandler(AccessDeniedException.class)
     public R handleAccessDeniedException(AccessDeniedException exception) {
-        System.out.println("AccessDeniedException"+exception);
+        System.out.println("AccessDeniedException捕获到了异常  ： "+exception);
         return R.error(99999, exception.getMessage());
     }
 
+
+    /**
+     *  AuthenticationException异常是由 DispatcherServlet 后面的 Authentication Filter 在调用 Controller 方法之前抛出的，
+     *  因此 @ControllerAdvice 无法捕获这些异常
+     *  需要通过自定义 CustomAccessDeniedHandler  使用handlerExceptionResolver 传递异常到控制层捕获
+     *
+     */
     @ExceptionHandler(AuthenticationException.class)
     public R handleAuthenticationException(AuthenticationException exception) {
         System.out.println("AuthenticationException捕获到了异常"+exception);
